@@ -1,11 +1,9 @@
 from pioneer_sdk import Pioneer, Camera
 
 from flight_utils import load_flight_coordinates, get_config
-from drone_navigation import FlightMissionRunner, CustomPioneer, WebcamStream, YoloRKNN
-import time  
+from drone_navigation import FlightMissionRunner
 
 
-import cv2
 
 
 
@@ -25,14 +23,13 @@ if __name__ == "__main__":
         mission = FlightMissionRunner(MAP_POINTS)
         
         # Инициализация дрона
-        pioneer = CustomPioneer(
+        pioneer = Pioneer(
             name="pioneer",
             ip=pioneer_conf["ip"],
             mavlink_port=pioneer_conf["port"],
             connection_method="udpout",
             device="dev/serial0",
-            baud=115200,
-            verbose=True
+            baud=115200, log_connection=True, logger=True
         )
 
         
@@ -48,11 +45,11 @@ if __name__ == "__main__":
 
         # Основной цикл миссии
         while not mission.is_complete():
-        
+            # time.sleep(0.01)
 
 
 
-            if pioneer.point_reached(threshold=0.3):
+            if pioneer.point_reached():
                 # Переход к следующей точке
                 next_point = mission.get_next_point()
                 if next_point:

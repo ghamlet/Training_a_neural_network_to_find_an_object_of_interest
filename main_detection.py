@@ -2,7 +2,7 @@ from pioneer_sdk import Pioneer, Camera
 import cv2
 import time
 from flight_utils import load_flight_coordinates, get_config
-from drone_navigation import FlightMissionRunner, CustomPioneer
+from drone_navigation import FlightMissionRunner
 import os
 import numpy as np
 from pathlib import Path
@@ -425,14 +425,14 @@ if __name__ == "__main__":
         pioneer_conf = get_config('local')
         
         # Инициализация дрона
-        pioneer = CustomPioneer(
+        pioneer = Pioneer(
             name="pioneer",
             ip=pioneer_conf["ip"],
             mavlink_port=pioneer_conf["port"],
             connection_method="udpout",
             device="dev/serial0",
             baud=115200,
-            verbose=False
+            log_connection=True, logger=True
         )
 
         # Инициализация системы сохранения детекций
